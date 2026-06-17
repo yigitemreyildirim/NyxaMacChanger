@@ -14,15 +14,20 @@ def changeMacAddress(user_interface,user_mac_address):
     subprocess.call(["ifconfig",user_interface,"up"])
     subprocess.call(["clear"])
 
-print("Nyxa Mac Changer Started")
-
-(user_input,arguments) = getUserInput()
-changeMacAddress(user_input.interface,user_input.mac_address)
-
-print("Mac Address Changed Successfully")
-print(f"Interface of the changed MAC address: ")
-print(f"Changed mac address: ")
 
 
 
+def displayInfo():
+    (user_input, arguments) = getUserInput()
+    changeMacAddress(user_input.interface, user_input.mac_address)
+    print("[+]Nyxa Mac Changer Started")
+    print("[+]Mac Address Changed Successfully")
+    print("=" * 32)
+    print(f"Interface of the changed MAC address: {user_input.interface}")
+    print(f"Changed mac address: {user_input.mac_address}")
+    ifconfig_output = subprocess.check_output(["ifconfig", user_input.interface]).decode()
+    print("=" * 50)
+    print(ifconfig_output)
+    print("=" * 75)
 
+displayInfo()
