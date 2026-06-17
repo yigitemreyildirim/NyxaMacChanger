@@ -1,6 +1,7 @@
-# you must be root
+# Note: you must be root
 import subprocess
 import optparse
+import re
 
 def getUserInput():
     parse_object = optparse.OptionParser()
@@ -14,20 +15,32 @@ def changeMacAddress(user_interface,user_mac_address):
     subprocess.call(["ifconfig",user_interface,"up"])
     subprocess.call(["clear"])
 
-
+def controlNewMac(interface):
+    ifconfig_output = subprocess.check_output(["ifconfig",interface]).decode()
+    new_mac = re.search(r"([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}",ifconfig_output)
+    if new_mac:
+        return new_mac.group(0)
+    else:
+        return None
 
 
 def displayInfo():
+    print("[+]Nyxa Mac Changer Started")
+
     (user_input, arguments) = getUserInput()
     changeMacAddress(user_input.interface, user_input.mac_address)
-    print("[+]Nyxa Mac Changer Started")
-    print("[+]Mac Address Changed Successfully")
-    print("=" * 32)
-    print(f"Interface of the changed MAC address: {user_input.interface}")
-    print(f"Changed mac address: {user_input.mac_address}")
-    ifconfig_output = subprocess.check_output(["ifconfig", user_input.interface]).decode()
-    print("=" * 50)
-    print(ifconfig_output)
-    print("=" * 75)
+    finalized_mac = controlNewMac(user_input.interface)
+
+    if finalized_mac == user_input.mac_address:
+        print("[+]Mac Address Changed Successfully")
+        print("=" * 32)
+        print(f"Interface of the changed MAC address: {user_input.interface}")
+        print(f"Changed mac address: {user_input.mac_address}")
+        print("=" * 50)
+        subprocess.call(["ifconfig",user_input.interface])
+        print("=" * 75)
+    else:
+        print("[+]Mac Address Changed Failed")
+        print("=" * 32)
 
 displayInfo()
