@@ -1,4 +1,5 @@
 # Note: you must be root
+# The code required to run: python3 nyxa_mac_changer.py
 import subprocess
 import optparse
 import re
