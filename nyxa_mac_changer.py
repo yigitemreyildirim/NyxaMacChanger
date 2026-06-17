@@ -14,9 +14,6 @@ parse_object.add_option("-m","--mac",dest="mac_address",default="eth0",help="new
 user_interface = user_input.interface
 user_mac_address = user_input.mac_address
 
-interface = "eth0"
-mac_address = "00:11:22:33:44:55"
-
 subprocess.call(["ifconfig",user_interface,"down"])
 subprocess.call(["ifconfig",user_interface,"hw","ether",user_mac_address])
 subprocess.call(["ifconfig",user_interface,"up"])
