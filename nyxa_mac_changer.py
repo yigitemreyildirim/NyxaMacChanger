@@ -1,4 +1,5 @@
 # you must be root
+# python nyxa_mac_changer.py -i eth0 -m 00:22:33:55:11
 import subprocess
 import optparse
 
